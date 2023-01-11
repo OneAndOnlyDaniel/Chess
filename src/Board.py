@@ -26,7 +26,7 @@ class Board:
 		temp = self.getIndex(q)
 
 		self.setIndex(q, self.getIndex(p))
-		self.setIndex(p, "")
+		self.setIndex(p, ".")
 
 	def setIndex(self, ind, inp):
 		y = ind[1]
@@ -39,12 +39,19 @@ class Board:
 		# Assumes ind = [x, y]
 		return self.board[ind[1]][ind[0]]
 
-	def renderBoard(self):
+	def renderBoard(self, selected = ""):
+		if selected == "":
+			ySel = -1
+			xSel = -1
+		else:
+			p = CTI(selected)
+			ySel = 7 - p[1]
+			xSel = p[0]
+
 		for y in range(8):
 			row = ""
 			for x in range(8):
 				# Board numbering is from bottom left, but array indexing is from top left
-				# print("(7 - y, x) = ({0}, {1})".format(7 - y, x))
 				temp = self.board[7 - y][x]
 				if temp == ".":
 					temp = " "
@@ -58,6 +65,9 @@ class Board:
 					temp = Back.BLACK + temp
 
 				if self.board[7 - y][x] != " ":
+					if y == ySel and x == xSel:
+						temp = Style.BRIGHT + temp
+
 					if isWhite: # Player is black
 						temp = Fore.RED + temp
 					else:
@@ -66,7 +76,7 @@ class Board:
 				temp = temp + Style.RESET_ALL
 
 				row = row + temp
-			print("\t\t" + str(7 - y) + "  " + row)
+			print("\t\t" + str(7 - y + 1) + "  " + row)
 
 		print()
 		print("\t\t   abcdefgh")
