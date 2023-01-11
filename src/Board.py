@@ -24,22 +24,27 @@ class Board:
 		q = CTI(b)
 
 		temp = self.getIndex(q)
+
 		self.setIndex(q, self.getIndex(p))
 		self.setIndex(p, "")
 
+	def setIndex(self, ind, inp):
+		y = ind[1]
+		x = ind[0]
+		s = self.board[y][x]
 
-	def setIndex(self, ind, value):
-		self.board[ind[0]][ind[1]] = value
+		self.board[y] = self.board[y][:x] + inp + self.board[y][x + 1:]
 
 	def getIndex(self, ind):
 		# Assumes ind = [x, y]
-		return self.board[ind[0]][ind[1]]
+		return self.board[ind[1]][ind[0]]
 
 	def renderBoard(self):
 		for y in range(8):
 			row = ""
 			for x in range(8):
 				# Board numbering is from bottom left, but array indexing is from top left
+				# print("(7 - y, x) = ({0}, {1})".format(7 - y, x))
 				temp = self.board[7 - y][x]
 				if temp == ".":
 					temp = " "
@@ -61,7 +66,10 @@ class Board:
 				temp = temp + Style.RESET_ALL
 
 				row = row + temp
-			print(row)
+			print("\t\t" + str(7 - y) + "  " + row)
+
+		print()
+		print("\t\t   abcdefgh")
 
 # Coordinate to Index
 def CTI(coord):
